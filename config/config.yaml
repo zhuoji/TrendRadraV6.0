@@ -55,28 +55,26 @@ schedule:
 platforms:
   enabled: true                         # 是否启用热榜平台抓取
   sources:
-    - id: "toutiao"
-      name: "今日头条"
-    - id: "baidu"
-      name: "百度热搜"
-    - id: "wallstreetcn-hot"
-      name: "华尔街见闻"
-    - id: "thepaper"
-      name: "澎湃新闻"
-    - id: "bilibili-hot-search"
-      name: "bilibili 热搜"
-    - id: "cls-hot"
-      name: "财联社热门"
-    - id: "ifeng"
-      name: "凤凰网"
-    - id: "tieba"
-      name: "贴吧"
-    - id: "weibo"
-      name: "微博"
-    - id: "douyin"
-      name: "抖音"
-    - id: "zhihu"
-      name: "知乎"
+  - id: "cls-telegraph"
+    name: "⚡ 财联社电报"   # [B户进攻雷达] 重点盯：火箭发射、卫星组网、军工订单、低空经济政策。这是“拓斯达/军工龙头”的生命线！
+  
+  - id: "wallstreetcn-hot"
+    name: "🌎 华尔街见闻"   # [A户防守雷达] 重点盯：美股科技（英伟达/特斯拉）走势、美联储关税政策。CPO和芯片跌没跌？全看这里。
+
+  - id: "cls-hot"
+    name: "🔥 财联社热门"   # [主线确认] 确认“商业航天”是否还在榜一？如果是，B户继续贪婪；如果掉下去了，小心退潮。
+
+  - id: "gelonghui"
+    name: "🇭🇰 格隆汇"       # [港美联动] 服务A户的“康方生物/中概互联”，以及监控美股“军工/防务板块”的隔夜表现（映射A股）。
+
+  - id: "xueqiu"
+    name: "❄️ 雪球热帖"     # [情绪反指] 重点观察散户对“中际旭创（恐慌吗？）”和“拓斯达（亢奋吗？）”的讨论。人声鼎沸时要卖，哀鸿遍野时要买。
+
+  - id: "toutiao"
+    name: "今日头条"
+
+  - id: "weibo"
+    name: "微博"
 
 
 
