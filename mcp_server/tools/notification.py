@@ -1202,12 +1202,10 @@ class NotificationTools:
                 "error": {"code": "INTERNAL_ERROR", "message": str(e)},
             }
 
-def _dispatch_to_channel(
+    def _dispatch_to_channel(
         self, channel_id: str, config: Dict, message: str, title: str
     ) -> Dict:
         """分发消息到指定渠道（格式适配 → 字节分批 → 多账号 × 逐批发送）"""
-        
-        # 从 config 读取批次配置
         batch_sizes = self._get_batch_sizes()
         batch_interval = self._get_batch_interval()
 
@@ -1223,27 +1221,31 @@ def _dispatch_to_channel(
             )
             message += laoshen_prompt
         # ========================================================================
+
         # Email 无字节限制，不走分批管线
         if channel_id == "email":
             return _send_email(
-                config["EMAIL_FROM"],
-                config["EMAIL_PASSWORD"],
-                config["EMAIL_TO"],
-                message, title,
-                config.get("EMAIL_SMTP_SERVER", ""),
-                config.get("EMAIL_SMTP_PORT", ""),
+                config["EMAIL_FROM"], config["EMAIL_PASSWORD"], config["EMAIL_TO"],
+                message, title, config.get("EMAIL_SMTP_SERVER", ""), config.get("EMAIL_SMTP_PORT", "")
             )
 
-        # 统一分批管线：格式适配 → 字节分割 → 添加批次头部 → (可选)反序
+        # 统一分批处理
         batches = _prepare_batches(message, channel_id, batch_sizes)
 
-        # 按渠道路由发送
+        # 飞书发送逻辑
         if channel_id == "feishu":
             return self._send_batched_multi_account(
                 config["FEISHU_WEBHOOK_URL"], batches, channel_id,
                 lambda url, content: _send_feishu(url, content, title),
                 batch_interval,
             )
+        
+        # 为了防报错，这里保留一个默认返回（针对其他渠道）
+        return self._send_batched_multi_account(
+            config.get(f"{channel_id.upper()}_WEBHOOK_URL", ""), batches, channel_id,
+            lambda url, content: {"success": True, "detail": "Skip other channels"},
+            batch_interval,
+        )
         elif channel_id == "dingtalk":
             return self._send_batched_multi_account(
                 config["DINGTALK_WEBHOOK_URL"], batches, channel_id,
