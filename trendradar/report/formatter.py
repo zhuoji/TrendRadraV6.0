@@ -54,7 +54,12 @@ def format_title_for_platform(
     # 获取关键词标签（platform 模式使用）
     keyword = title_data.get("matched_keyword", "") if show_keyword else ""
 
-    if platform == "feishu":
+if platform == "feishu":
+        # 强制将飞书的排名格式转为纯净版(借用wework的干净格式，避免 format_rank_display 内部生成 font 标签)
+        rank_display = format_rank_display(
+            title_data["ranks"], title_data["rank_threshold"], "wework"
+        )
+        
         if link_url:
             formatted_title = f"[{cleaned_title}]({link_url})"
         else:
@@ -63,18 +68,18 @@ def format_title_for_platform(
         title_prefix = "🆕 " if title_data.get("is_new") else ""
 
         if show_source:
-            result = f"<font color='grey'>[{title_data['source_name']}]</font> {title_prefix}{formatted_title}"
+            result = f"[{title_data['source_name']}] {title_prefix}{formatted_title}"
         elif show_keyword and keyword:
-            result = f"<font color='blue'>[{keyword}]</font> {title_prefix}{formatted_title}"
+            result = f"[{keyword}] {title_prefix}{formatted_title}"
         else:
             result = f"{title_prefix}{formatted_title}"
 
         if rank_display:
             result += f" {rank_display}"
         if title_data["time_display"]:
-            result += f" <font color='grey'>- {title_data['time_display']}</font>"
+            result += f" - {title_data['time_display']}"
         if title_data["count"] > 1:
-            result += f" <font color='green'>({title_data['count']}次)</font>"
+            result += f" ({title_data['count']}次)"
 
         return result
 
