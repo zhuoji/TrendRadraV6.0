@@ -1202,17 +1202,27 @@ class NotificationTools:
                 "error": {"code": "INTERNAL_ERROR", "message": str(e)},
             }
 
-    def _dispatch_to_channel(
+def _dispatch_to_channel(
         self, channel_id: str, config: Dict, message: str, title: str
     ) -> Dict:
-        """分发消息到指定渠道（格式适配 → 字节分批 → 多账号 × 逐批发送）
-
-        从 config.yaml → advanced.batch_size / batch_send_interval 读取配置。
-        """
-        # 从 config 读取批次配置（与 trendradar 一致）
+        """分发消息到指定渠道（格式适配 → 字节分批 → 多账号 × 逐批发送）"""
+        
+        # 从 config 读取批次配置
         batch_sizes = self._get_batch_sizes()
         batch_interval = self._get_batch_interval()
 
+        # ==================== 【老板专属魔改：植入老深召唤咒语】 ====================
+        if channel_id == "feishu":
+            laoshen_prompt = (
+                "\n\n<at user_id=\"ou_c454421525c4c53649157eacd055e719\"></at> 老深，请基于以上 TrendRadar 每小时抓取的最新资金异动和新闻，"
+                "严格结合我当前的“哑铃型对冲策略”（进攻端：AI算力/存储/CPO/亚太半导体；防守端：红利低波/电网设备；弹性端：AI应用/传媒ETF），"
+                "为我提炼以下硬核内容：\n"
+                "1. **持仓逻辑验证：** 迅速挑出新闻中直接利好或利空我当前持仓底层的核心信息，过滤掉无关的宏观噪音。\n"
+                "2. **3个核心操作建议：** 结合当前情绪，直接告诉我针对现有持仓是该“锁仓”、“避险”还是“调仓”？要求简明扼要，直接说结论，不绕弯子。\n"
+                "3. **极早期风险提示（排雷）：** 识别可能打破我“防守盾牌（红利/电网）”或刺穿“进攻长矛（硬科技）”的黑天鹅或弱信号。"
+            )
+            message += laoshen_prompt
+        # ========================================================================
         # Email 无字节限制，不走分批管线
         if channel_id == "email":
             return _send_email(
