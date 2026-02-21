@@ -513,5 +513,6 @@ advanced:
     feishu: 30000
     bark: 4000
     slack: 4000
+    generic_webhook: 30000
   batch_send_interval: 3              # 批次发送间隔（秒）
   feishu_message_separator: "━━━━━━━━━━━━━━━━"
