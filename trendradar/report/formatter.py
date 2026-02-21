@@ -55,7 +55,7 @@ def format_title_for_platform(
     keyword = title_data.get("matched_keyword", "") if show_keyword else ""
 
 if platform == "feishu":
-        # 强制将飞书的排名格式转为纯净版(借用wework的干净格式，避免 format_rank_display 内部生成 font 标签)
+        # 强制将飞书的排名格式转为纯净版(借用wework的干净格式，避免出现 font 标签乱码)
         rank_display = format_rank_display(
             title_data["ranks"], title_data["rank_threshold"], "wework"
         )
