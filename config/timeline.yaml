@@ -231,8 +231,8 @@ presets:
     periods:
       morning_briefing:
         name: "到岗速览"
-        start: "09:00"
-        end: "11:00"
+        start: "06:00"
+        end: "12:00"
         analyze: true              # AI 分析当前热点
         ai_mode: "current"         # AI 分析当前榜单
         push: true                 # 到岗后看当前热点
@@ -250,8 +250,8 @@ presets:
 
       closing_summary:
         name: "收工汇总"
-        start: "17:00"
-        end: "19:00"
+        start: "21:00"
+        end: "23:00"
         analyze: true              # AI 做全天汇总分析
         ai_mode: "daily"           # AI 也分析全天内容
         push: true                 # 下班前推送当日完整汇总
